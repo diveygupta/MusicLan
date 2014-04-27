@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+
+    <!-- More GUI components go here -->
+ <Button
+           android:id="@+id/btn_Start_Chat"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:layout_marginTop="35dp"
+           android:text="Start_Chat" />
+    <TextView
+        android:id="@+id/rcv_chat"
+        android:layout_width="match_parent"
+        android:layout_height="53dp"
+        android:hint="Rcv Msgs Here" 
+        android:visibility="invisible"
+        />
+
+    <EditText
+        android:id="@+id/send_chat"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:inputType="text"
+        android:ems="10" 
+        android:visibility="invisible"
+        >
+
+        <requestFocus />
+    </EditText>
+
+    <Button
+        android:id="@+id/btn_send"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Send" 
+       android:visibility="invisible"
+       />
+
+</LinearLayout>
