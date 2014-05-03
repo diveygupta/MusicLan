@@ -53,13 +53,18 @@ public class PeerBottomFragment extends Fragment{
 	   mContentView = inflater.inflate(R.layout.peer_bottom_fragment, container, false);
 	   btnSendChat = (Button) mContentView.findViewById(R.id.btn_send);
 	   btnStartChat = (Button) mContentView.findViewById(R.id.btn_Start_Chat);
-	   
+	   btnStartChat.setVisibility(View.VISIBLE);
 	   PeerBottomFragmentActivity = getActivity();
 	     
 	   PeerActivity activity = (PeerActivity) getActivity();
 	   host  = activity.getHost();
 	   port  = activity.getPort();
 	   
+	  /* mContentView.findViewById(R.id.rcv_chat).setVisibility(View.VISIBLE);
+		 mContentView.findViewById(R.id.send_chat).setVisibility(View.VISIBLE);
+		 mContentView.findViewById(R.id.btn_send).setVisibility(View.VISIBLE);
+		 btnStartChat.setVisibility(View.GONE);
+		 socketThread.start();*/
 	   btnStartChat.setOnClickListener(new View.OnClickListener() {
 		
 		@Override
@@ -68,12 +73,12 @@ public class PeerBottomFragment extends Fragment{
 			 mContentView.findViewById(R.id.rcv_chat).setVisibility(View.VISIBLE);
 			 mContentView.findViewById(R.id.send_chat).setVisibility(View.VISIBLE);
 			 mContentView.findViewById(R.id.btn_send).setVisibility(View.VISIBLE);
-			
+			 btnStartChat.setVisibility(View.GONE);
 			 socketThread.start();
 			// rcvThread.start();
 		}
 	});
-	   
+
 	   
 	   socketThread = new Thread(new Runnable(){
 		    @Override
@@ -146,7 +151,7 @@ public class PeerBottomFragment extends Fragment{
           //   out = new PrintWriter(ostream);
              EditText eText = (EditText) getActivity().findViewById(R.id.send_chat);        
              String msg = eText.getText().toString(); 
-             if(msg!= null)
+             if(msg != null || msg.length() > 0)
              {
              	//out.println(msg);
             	 try {

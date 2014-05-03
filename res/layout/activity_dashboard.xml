@@ -1,48 +1,86 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="#7b7b7b">
-     
-    <TextView android:layout_width="fill_parent"
-              android:layout_height="wrap_content"
-              android:text="WELCOME"
-              android:textSize="40sp"
-              android:gravity="center"
-              android:layout_marginTop="20dip"/>
-    
-     <Button android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="Continue"
-        android:textSize="20sp"
-        android:textColor="#21dbd4"
-        android:textStyle="bold"
-        android:id="@+id/btnContinue"
-        android:layout_marginTop="80dip"
-        android:background="@null"/>
-     
-   		  <Button
-                android:id="@+id/btn_share_songs"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:textSize="20sp"
-        		android:textColor="#21dbd4"
-        		android:textStyle="bold"
-        		android:layout_marginTop="80dip"
-                android:text="Share Songs"
-             	android:background="@null"
-                 />
-     
-    <Button 
-    	android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="Logout Me"
-        android:textSize="20sp"
-        android:textColor="#21dbd4"
-        android:textStyle="bold"
-        android:id="@+id/btnLogout"
-        android:layout_marginTop="80dip"
-        android:background="@null"/>
- 
-</LinearLayout>
+    android:background="@drawable/wall5"
+    android:orientation="vertical" >
+
+     <ImageButton
+         android:id="@+id/btnContinue"
+         android:layout_width="82dp"
+         android:layout_height="70dp"
+         android:layout_alignLeft="@+id/editText1"
+         android:layout_below="@+id/textView1"
+         android:background="@drawable/icon1"
+         android:scaleType="fitXY" />
+
+     <TextView
+         android:id="@+id/textView1"
+         android:layout_width="fill_parent"
+         android:layout_height="wrap_content"
+         android:layout_alignParentLeft="true"
+         android:layout_alignParentTop="true"
+         android:gravity="center"
+         android:text="WELCOME"
+         android:textColor="@android:color/darker_gray"
+         android:textSize="40sp" />
+
+     <ImageButton
+         android:id="@+id/btnLogout"
+         android:layout_width="80dp"
+         android:layout_height="70dp"
+         android:layout_below="@+id/editText2"
+         android:layout_centerHorizontal="true"
+         android:background="@drawable/icon3"
+         android:scaleType="fitXY" />
+
+     <TextView
+         android:id="@+id/editText1"
+         android:layout_width="139dp"
+         android:layout_height="wrap_content"
+         android:layout_alignLeft="@+id/btn_share_songs"
+         android:layout_below="@+id/btnContinue"
+         android:layout_marginTop="20dp"
+         android:ems="10"
+         android:text="Continue"
+         android:textColor="#21dbd4"
+         android:textSize="20sp"
+         android:textStyle="bold" />
+
+     <TextView
+         android:id="@+id/editText2"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_alignLeft="@+id/btnLogout"
+         android:layout_alignParentRight="true"
+         android:layout_below="@+id/btn_share_songs"
+         android:ems="10"
+         android:text="Share Songs"
+         android:textColor="#21dbd4"
+         android:textSize="20sp"
+         android:textStyle="bold" />
+
+     <ImageButton
+         android:id="@+id/btn_share_songs"
+         android:layout_width="80dp"
+         android:layout_height="70dp"
+         android:layout_alignLeft="@+id/editText2"
+         android:layout_below="@+id/editText1"
+         android:layout_marginTop="14dp"
+         android:background="@drawable/icon2"
+         android:scaleType="fitXY" />
+
+     <TextView
+         android:id="@+id/editText3"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_alignLeft="@+id/btnLogout"
+         android:layout_alignParentRight="true"
+         android:layout_below="@+id/btnLogout"
+         android:ems="10"
+         android:text="Logout Me"
+         android:textColor="#21dbd4"
+         android:textSize="20sp"
+         android:textStyle="bold" />
+
+</RelativeLayout>

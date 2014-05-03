@@ -18,12 +18,14 @@
                 android:id="@+id/btn_connect"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/connect_peer_button" />
+                android:text="@string/connect_peer_button"
+                android:textColor="#ff000000" />
             <Button
                 android:id="@+id/btn_disconnect"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/disconnect_peer_button" />
+                android:text="@string/disconnect_peer_button"
+                android:textColor="#ff000000" />
             <Button
                 android:id="@+id/btn_start_client"
                 android:layout_width="wrap_content"
@@ -36,6 +38,7 @@
                 android:layout_height="wrap_content"
                 android:text="Get List"
                 android:visibility="visible"
+                android:textColor="#ff000000"
                  />
         </LinearLayout>
         <TextView
@@ -65,20 +68,26 @@
             android:id="@+id/rcv_chat_server"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" 
-            android:text="Msg here"
-            android:visibility="gone"/>
+            android:hint="Rcv Msgs Here"
+            android:visibility="gone"
+            android:textColor="#ff000000"
+     	    android:textSize="20sp"/>
         <EditText
             android:id="@+id/send_chat_server"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="text" 
-            android:visibility="gone"/>
+            android:visibility="gone"
+            android:textColor="#ff000000"
+            android:textSize="20sp"/>
         <Button
                 android:id="@+id/btn_send_chat_server"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="SendChat"
-                android:visibility="gone" /> 
+                android:text="Send Chat"
+                android:visibility="gone" 
+                android:background="@android:color/transparent"
+       			android:textColor="#ff000000"/> 
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
@@ -87,7 +96,8 @@
         android:layout_gravity="bottom"
         android:layout_height="37dp"
         android:layout_marginBottom="3dp"
-        android:background="@android:color/background_light">
+        android:background="@android:color/background_light"
+        android:visibility="gone">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"

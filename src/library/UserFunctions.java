@@ -14,7 +14,7 @@ public class UserFunctions {
     private JSONParser jsonParser;
      
     // Testing in localhost using wamp 
-    // use http://10.0.2.2/ to connect to your localhost ie http://localhost/
+    // use http://10.0.2.2/ to connect to your localhost ie http://localhost/ 10.120.103.103
     private static String loginURL = "http://192.168.1.88/MusicLan/";
     private static String registerURL = "http://192.168.1.88/MusicLan/";
     private static String songShareURL = "http://192.168.1.88/MusicLan/";

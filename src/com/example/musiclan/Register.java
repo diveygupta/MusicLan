@@ -18,6 +18,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.app.Activity;
 import android.view.Menu;
 
@@ -65,6 +66,20 @@ public class Register extends Activity {
                 String name = inputFullName.getText().toString();
                 String email = inputEmail.getText().toString();
                 String password = inputPassword.getText().toString();
+                
+                if(name.length() == 0 || email.length() == 0 || password.length() == 0){
+                	Toast.makeText(getApplicationContext(),"Field missing", Toast.LENGTH_SHORT).show();
+                	return;
+                }
+                
+                if(!email.contains("@") || !email.contains(".com")){
+                	Toast.makeText(getApplicationContext(),"Incorrect email id", Toast.LENGTH_SHORT).show();
+                	return;
+                }
+                if(password.length() < 6){
+                	Toast.makeText(getApplicationContext(),"Enter password of Min length 6", Toast.LENGTH_SHORT).show();
+                	return;
+                }
                 //UserFunctions userFunction = new UserFunctions();
                 new getResponseRegsiter().execute(name,email,password,macAddr);
                // JSONObject json = userFunction.registerUser(name, email, password);

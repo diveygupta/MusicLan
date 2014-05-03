@@ -6,3 +6,4 @@ public class SongList {
 	String song_path;
 	String artist;
 }
+

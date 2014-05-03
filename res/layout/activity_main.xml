@@ -1,54 +1,83 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="#7b7b7b" >
+    android:background="@drawable/wall5"
+    android:orientation="vertical" >
 
-<android.support.v4.view.ViewPager
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/pager"
-    android:layout_width="match_parent"
-    android:layout_height="57dp"
-    android:orientation="vertical"
-    tools:context=".MainActivity" >
+    <android.support.v4.view.ViewPager
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/pager"
+        android:layout_width="match_parent"
+        android:layout_height="57dp"
+        android:orientation="vertical"
+        tools:context=".MainActivity" >
 
-    <!--
+        <!--
     This title strip will display the currently visible page title, as well as the page
     titles for adjacent pages.
-    -->
+        -->
 
-    <android.support.v4.view.PagerTitleStrip
-        android:id="@+id/pager_title_strip"
-        android:layout_width="match_parent"
+        <android.support.v4.view.PagerTitleStrip
+            android:id="@+id/pager_title_strip"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top"
+            android:background="#33b5e5"
+            android:paddingBottom="4dp"
+            android:paddingTop="4dp"
+            android:textColor="#fff" />
+    </android.support.v4.view.ViewPager>
+
+    <ImageButton
+        android:id="@+id/signup"
+        style="@style/AppBaseTheme"
+        android:layout_width="70dp"
+        android:layout_height="82dp"
+        android:layout_below="@+id/pager"
+        android:layout_centerHorizontal="true"
+        android:background="@null"
+        android:contentDescription="@null"
+        android:scaleType="fitXY"
+        android:src="@drawable/icon1" />
+
+    <TextView
+        android:id="@+id/editText1"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="top"
-        android:background="#33b5e5"
-        android:paddingBottom="4dp"
-        android:paddingTop="4dp"
-        android:textColor="#fff" />
+        android:layout_below="@+id/signup"
+        android:layout_centerHorizontal="true"
+        android:ems="5"
+        android:fontFamily="Arial"
+        android:paddingLeft="0.01dp"
+        android:text="Sign Up"
+        android:textColor="#ffff"
+        android:textSize="24sp" />
 
-</android.support.v4.view.ViewPager>
-
-<ImageButton
-    android:id="@+id/signup"
-    style="@style/AppBaseTheme"
-   android:layout_width="fill_parent"
+    <TextView
+        android:id="@+id/editText2"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-    android:layout_marginTop="80dip"
-    android:background="@null"
-    android:contentDescription="Sign Up"
-    android:src="@drawable/signupnowbutton" />
+        android:layout_alignLeft="@+id/editText1"
+        android:layout_below="@+id/login"
+        android:layout_marginTop="17dp"
+        android:ems="5"
+        android:paddingLeft="0.01dp"
+        android:text="Sign In"
+        android:textColor="#ffff"
+        android:textSize="24sp" />
 
     <ImageButton
         android:id="@+id/login"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-         android:layout_marginTop="80dip"
-         android:src="@drawable/loginbutton"
-          android:contentDescription="Login"
+        android:layout_width="164dp"
+        android:layout_height="72dp"
+        android:layout_alignRight="@+id/editText1"
+        android:layout_centerVertical="true"
         android:background="@null"
-        />
+        android:contentDescription="Login"
+        android:scaleType="centerInside"
+        android:src="@drawable/icon2"
+        android:verticalScrollbarPosition="defaultPosition" />
 
-</LinearLayout>
+</RelativeLayout>

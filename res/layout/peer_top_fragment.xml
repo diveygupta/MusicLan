@@ -4,19 +4,42 @@
    android:orientation="vertical"
    android:layout_width="fill_parent"
    android:layout_height="fill_parent"
+   android:background="@drawable/wall2"
    >
+
+<RelativeLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content" >
 
        <Button
            android:id="@+id/btn_Req_List"
            android:layout_width="wrap_content"
            android:layout_height="wrap_content"
            android:layout_marginTop="7dp"
-           android:text="Req_List" />
- 			
+           android:layout_marginLeft="50dp"
+           android:background="@android:color/transparent"
+           android:textColor="#ff000000"
+           android:text="Show List" 
+           />
+
+       <Button
+           android:id="@+id/btn_Pause_Song"
+           android:layout_width="50dp"
+           android:layout_height="50dp"
+           android:layout_alignBottom="@+id/btn_Req_List"
+           android:layout_marginLeft="200dp"
+           android:layout_marginTop="7dp"
+           android:background="@drawable/play"
+           android:scaleType="fitXY"
+           android:textColor="#ff000000" />
+
+ 			</RelativeLayout>
  		<ListView
               android:id="@+id/list"
               android:layout_height="wrap_content"
-              android:layout_width="match_parent">
+              android:layout_width="match_parent"
+              android:cacheColorHint="#FFFFFF" 
+              android:textColor="@android:color/holo_blue_bright">
          </ListView>
      <!--   <Button
            android:id="@+id/btn_Start_Chat"

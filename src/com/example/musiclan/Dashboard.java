@@ -19,6 +19,7 @@ import android.provider.MediaStore.MediaColumns;
 import android.app.Activity;
 import android.view.Menu;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.Toast;
 import android.content.ContentResolver;
 import android.content.Intent;
@@ -28,9 +29,9 @@ import android.view.View;
 public class Dashboard extends Activity {
 	protected static final int REQ_CODE_PICK_SOUNDFILE = 11;
 	UserFunctions userFunctions;
-    Button btnLogout;
-    Button btnContinue;
-    Button btnShare;
+    ImageButton btnLogout;
+    ImageButton btnContinue;
+    ImageButton btnShare;
     
     private static String KEY_SUCCESS = "success";
     private static String KEY_EMAIL = "email";
@@ -49,9 +50,9 @@ public class Dashboard extends Activity {
 	        if(userFunctions.isUserLoggedIn(getApplicationContext())){
 	       // user already logged in show databoard
 	            setContentView(R.layout.activity_dashboard);
-	            btnLogout = (Button) findViewById(R.id.btnLogout);
-	            btnContinue = (Button) findViewById(R.id.btnContinue);
-	            btnShare = (Button)findViewById(R.id.btn_share_songs);
+	            btnLogout = (ImageButton) findViewById(R.id.btnLogout);
+	            btnContinue = (ImageButton) findViewById(R.id.btnContinue);
+	            btnShare = (ImageButton)findViewById(R.id.btn_share_songs);
 	            
 	            btnContinue.setOnClickListener(new View.OnClickListener() {
 					
@@ -65,7 +66,7 @@ public class Dashboard extends Activity {
 						wifiD.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 	                    startActivity(wifiD);
 						// Closing dashboard screen
-	                    finish();
+	                   // finish();
 					}
 				});
 	            

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent" 
-    android:background="#7b7b7b">
+    android:background="@drawable/wall13">
  
     <LinearLayout
         android:layout_width="fill_parent"
@@ -10,40 +10,56 @@
         android:orientation="vertical"
         android:padding="10dip" >
         <!--  View Title Label -->
+
         <TextView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dip"
-            android:text="LOGIN"
             android:textSize="25sp"
-            android:textStyle="bold" />
+            android:textStyle="bold" 
+            android:textColor="#ffffd4"/>
+
         <!--  Email Label -->
         <TextView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="Email" />
+            android:text="Email"
+            android:textSize="20sp"
+            android:textColor="@android:color/holo_blue_bright" />
         <!--  Email TextField -->
         <EditText
             android:id="@+id/loginEmail"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:inputType="textEmailAddress"
-            android:text="d" />
+            android:textColor="#ffffff" 
+            android:ems="10" >
+            <requestFocus />
+            </EditText>
          
         <!--  Password Label -->
         <TextView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dip"
-            android:text="Password" />
+            android:text="Password" 
+            android:textSize="20sp"
+            android:textColor="@android:color/holo_blue_bright"/>
         <!--  Password TextField -->
+
         <EditText
             android:id="@+id/loginPassword"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:inputType="textPassword" />
+            android:textColor = "#ffffff"
+            android:ems="10"
+            android:inputType="textPassword" >
+
+          
+        </EditText>
          
         <!--  Error message -->
+
         <TextView android:id="@+id/login_error"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
@@ -51,24 +67,33 @@
                     android:padding="10dip"
                     android:textStyle="bold"/>
  
-        <!--  Login Button -->       
-        <Button
-            android:id="@+id/btnLogin"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dip"
-            android:text="Login" />
+        <!--  Login Button -->
  
         <!--  Link to Registration Screen -->
+
+        <Button
+            android:id="@+id/btnLogin"
+            android:layout_width="165dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="40dip"
+            android:layout_marginTop="20dip"
+            android:background="@android:color/transparent"
+            android:textColor="@android:color/holo_blue_bright"
+            android:gravity="center"
+            android:text="     Login"          
+            android:textSize="20sp" />
+
         <Button
             android:id="@+id/btnLinkToRegisterScreen"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="40dip"
+            android:layout_marginTop="100dip"
             android:background="@null"
+            android:gravity="center_vertical|center_horizontal|center"
             android:text="I don&apos;t have account. Register Me!"
             android:textColor="#21dbd4"
             android:textStyle="bold" />
+
     </LinearLayout>
  
-</ScrollView>
+</RelativeLayout>

@@ -2,7 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:orientation="vertical" >
+    android:orientation="vertical" 
+      android:background="@drawable/wall6">
 
     <!-- More GUI components go here -->
  <Button
@@ -10,13 +11,17 @@
            android:layout_width="wrap_content"
            android:layout_height="wrap_content"
            android:layout_marginTop="35dp"
-           android:text="Start_Chat" />
+           android:text="Start Chat"
+           android:background="@android:color/transparent"
+           android:textColor="#ff000000" />
     <TextView
         android:id="@+id/rcv_chat"
         android:layout_width="match_parent"
         android:layout_height="53dp"
         android:hint="Rcv Msgs Here" 
         android:visibility="invisible"
+        android:textColor="#ff000000"
+        android:textSize="20sp"
         />
 
     <EditText
@@ -26,6 +31,8 @@
         android:inputType="text"
         android:ems="10" 
         android:visibility="invisible"
+        android:textColor="#ff000000"
+        android:textSize="15sp"
         >
 
         <requestFocus />
@@ -36,7 +43,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Send" 
-       android:visibility="invisible"
+        android:background="@android:color/transparent"
+        android:textColor="#ff000000"
+        android:visibility="invisible"
        />
 
 </LinearLayout>

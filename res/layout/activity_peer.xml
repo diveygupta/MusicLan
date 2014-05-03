@@ -6,13 +6,12 @@
     android:orientation="vertical" >
 
     <fragment
-        class="com.example.musiclan.PeerTopFragment"
         android:id="@+id/top_fragment"
         android:name="com.example.fragments"
         android:layout_width="match_parent"
         android:layout_height="138dp"
-        android:layout_weight="0.02"
-        />
+        android:layout_weight="0.08"
+        class="com.example.musiclan.PeerTopFragment" />
 
     <fragment
         class="com.example.musiclan.PeerBottomFragment"
