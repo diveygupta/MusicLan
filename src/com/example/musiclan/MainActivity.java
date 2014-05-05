@@ -1,9 +1,11 @@
 package com.example.musiclan;
 
+import java.io.File;
 import java.util.Locale;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
@@ -56,6 +58,10 @@ public class MainActivity extends FragmentActivity {
 		
 		addListenerOnButtonSignUp();
 		addListenerOnButtonLogin();
+		 File dir = new File(Environment.getExternalStorageDirectory()+File.separator+"MusicLan");
+		 if (!dir.exists())
+			 dir.mkdirs();
+		 
 	}
 
 	public void addListenerOnButtonSignUp() {

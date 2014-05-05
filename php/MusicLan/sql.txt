@@ -9,6 +9,3 @@ create table users(
    updated_at datetime null
 ); /** Creating Users Table **/
 
-
-CREATE TABLE songs_list (email varchar(40) NOT NULL,song varchar(60) NOT NULL,song_path varchar(100) NOT NULL,genre varchar(20) DEFAULT GENERAL,artist varchar(20) DEFAULT NULL,PRIMARY KEY (email,song),
-CONSTRAINT `songs_list_ibfk_1` FOREIGN KEY (email) REFERENCES users (email));

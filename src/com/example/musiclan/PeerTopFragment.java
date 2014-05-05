@@ -1,13 +1,19 @@
 package com.example.musiclan;
 
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.OutputStream;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
+import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
 import java.util.ArrayList;
@@ -15,12 +21,15 @@ import java.util.ArrayList;
 import com.example.musiclan.R;
 import com.example.musiclan.R.layout;
 
+import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.media.AudioFormat;
 import android.media.AudioManager;
 import android.media.AudioTrack;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -39,7 +48,7 @@ public class PeerTopFragment extends Fragment{
 	
 	private View mContentView = null;
 	private Button btnReqList,btnPause; 
-	private Thread socketThread, songRcvThread;
+	private Thread socketThread, songRcvThread,songDownloadThread;
 	private Socket socket = new Socket();
 	private ObjectOutputStream sostream;
 	private ObjectInputStream sistream;
@@ -48,11 +57,12 @@ public class PeerTopFragment extends Fragment{
 	Context context;
 	String songPath = null;
 	boolean isSockOpen = false, setPause = false;
-	public String currentPlayingSong = null;
+	public String currentPlayingSong = null, currentDownloadSong = null;
 	static final String LOG_TAG = "UdpStream";
     //static final String AUDIO_FILE_PATH = "/storage/sdcard0/Music/tu.wav";
     //static final String AUDIO_FILE_PATH = "/storage/sdcard0/Music/Avril Lavigne/The Best Damn Thing/Girlfriend.mp3";
     static final int AUDIO_PORT = 2048;
+    static final int DOWNLOAD_PORT = 2050;
     static final int SAMPLE_RATE = 8000;
     static final int SAMPLE_INTERVAL = 480; // milliseconds
     static final int SAMPLE_SIZE = 2; // bytes per sample
@@ -103,7 +113,7 @@ public class PeerTopFragment extends Fragment{
            	 try {
 				if(setPause){
 					SongSelection song = new SongSelection();
-	    		 	song.setPause = false;
+	    		 	//song.setPause = false;
 	    		 	song.setPlay = true;
 					song.songPath = currentPlayingSong;
 					setPause = false;
@@ -112,7 +122,7 @@ public class PeerTopFragment extends Fragment{
 				} else{
 					SongSelection song = new SongSelection();
 	    		 	song.setPause = true;
-	    		 	song.setPlay = false;
+	    		 	//song.setPlay = false;
 	    		 	song.songPath = currentPlayingSong;
 				    setPause = true;
 				    sostream.writeObject(song);
@@ -140,6 +150,7 @@ public class PeerTopFragment extends Fragment{
              
              // ListView Clicked item value
              String  itemValue = (String) listView.getItemAtPosition(position);
+   		 	 currentDownloadSong = itemValue;
              for(SongList s:listOfSongs){
             	 if(s.song.compareTo(itemValue) == 0)
             		 songPath = s.song_path;	 
@@ -148,7 +159,86 @@ public class PeerTopFragment extends Fragment{
               // Show Alert 
              Toast.makeText(context,"Position :"+itemPosition+"  Song : " + itemValue +"song path: "+ songPath, Toast.LENGTH_LONG).show();
            
-             if(isSockOpen){
+             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+     				context);
+      
+     			// set title
+     			alertDialogBuilder.setTitle("Select an option");
+      
+     			// set dialog message
+     			alertDialogBuilder
+     				.setMessage("Click Play to Stream or Download to store!")
+     				.setCancelable(false)
+     				.setPositiveButton("Download",new DialogInterface.OnClickListener() {
+     					public void onClick(DialogInterface dialog,int id) {
+     						
+     						  if(isSockOpen){
+      			            	 try {
+      			            		 	SongSelection song = new SongSelection();
+      			            		 	//song.setPause = false;
+      			            		 	//song.setPlay = false;
+      			            		 	song.setDownload = true;
+      			            		 	song.songPath = songPath; 
+      									sostream.writeObject(song);
+      									sostream.flush();
+      								} catch (IOException e) {	
+      									e.printStackTrace();
+      								}
+      			             }
+      			             else
+      			            	 socketThread.start();
+      			             
+     						  //stop the running songDownloadThread then restart it
+     						  
+      			          /*  if(songDownloadThread == null || !songDownloadThread.isAlive())  
+      			               songDownloadThread.start();*/
+     						
+     						
+     					}
+     				  })
+     				.setNegativeButton("Cancel",new DialogInterface.OnClickListener() {
+     					public void onClick(DialogInterface dialog,int id) {
+     						// if this button is clicked, just close
+     						// the dialog box and do nothing
+     						dialog.cancel();
+     					}
+     				})
+     				.setNeutralButton("Play", new DialogInterface.OnClickListener() {
+     					public void onClick(DialogInterface dialog,int id) {
+     						// if this button is clicked, just close
+     						// the dialog box and do nothing
+     						dialog.cancel();
+     			             if(isSockOpen){
+     			            	 try {
+     			            		 	SongSelection song = new SongSelection();
+     			            		 	//song.setPause = false;
+     			            		 	song.setPlay = true;
+     			            		 	//song.setDownload = false;
+     			            		 	song.songPath = songPath;
+     			            		 	currentPlayingSong = songPath;
+     									sostream.writeObject(song);
+     									sostream.flush();
+     								} catch (IOException e) {	
+     									e.printStackTrace();
+     								}
+     			             }
+     			             else
+     			            	 socketThread.start();
+     			             
+     			            if(songRcvThread == null || !songRcvThread.isAlive())  
+     			               songRcvThread.start();
+     					}
+     				})
+     				;
+      
+     				// create alert dialog
+     				AlertDialog alertDialog = alertDialogBuilder.create();
+      
+     				// show it
+     				alertDialog.show();
+             
+             
+/*             if(isSockOpen){
             	 try {
             		 	SongSelection song = new SongSelection();
             		 	song.setPause = false;
@@ -157,8 +247,7 @@ public class PeerTopFragment extends Fragment{
             		 	currentPlayingSong = songPath;
 						sostream.writeObject(song);
 						sostream.flush();
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
+					} catch (IOException e) {	
 						e.printStackTrace();
 					}
              }
@@ -166,7 +255,7 @@ public class PeerTopFragment extends Fragment{
             	 socketThread.start();
             	 
            if(songRcvThread == null || !songRcvThread.isAlive())  
-             songRcvThread.start();
+             songRcvThread.start(); */
             
             }
 
@@ -187,8 +276,9 @@ public class PeerTopFragment extends Fragment{
 		                if(songPath != null)
 		                {
 		                	SongSelection song = new SongSelection();
-	            		 	song.setPause = false;
+	            		 	//song.setPause = false;
 	            		 	song.setPlay = true;
+	            		 //	song.setDownload = false;
 	            		 	song.songPath = songPath;
 	            		 	currentPlayingSong = songPath;
 							sostream.writeObject(song);
@@ -276,8 +366,70 @@ public class PeerTopFragment extends Fragment{
 		   
 	   });
 	   
+	   songDownloadThread = new Thread(new Runnable(){
+
+			@Override
+			public void run() {
+				// TODO Auto-generated method stub
+				  Log.e(LOG_TAG, "start recv thread, thread id: " + Thread.currentThread().getId());
+		              
+				  try
+	                {
+				  	ServerSocket songServerSocket = new ServerSocket(DOWNLOAD_PORT);
+	                Log.d(WiFiDirect.TAG, "Server: Socket opened");
+	                Socket songClient = songServerSocket.accept();	                
+	                Log.d(WiFiDirect.TAG, "Server: connection done");
+	                //enableViews();
+	                InputStream distream = songClient.getInputStream();
+	              //  OutputStream dostream = songClient.getOutputStream();
+				          	
+		            	    
+	                final File f = new File(Environment.getExternalStorageDirectory()+ "/MusicLan/" + currentDownloadSong+ ".wav");
+
+	                File dirs = new File(f.getParent());
+	                if (!dirs.exists())
+	                    dirs.mkdirs();
+	                f.createNewFile();
+
+	              //  Log.d(WiFiDirectActivity.TAG, "server: copying files " + f.toString());
+	                copyFile(distream, new FileOutputStream(f));
+	                songServerSocket.close();
+	                
+		                }
+		                catch (SocketException se)
+		                {
+		                    Log.e(LOG_TAG, "SocketException: " + se.toString());
+		                }
+		                catch (IOException ie)
+		                {
+		                    Log.e(LOG_TAG, "IOException" + ie.toString());
+		                }
+		                
+		                
+			}
+			   
+		   });
+	   
+	 	if(songDownloadThread == null || !songDownloadThread.isAlive())  
+	               songDownloadThread.start();
+	   
       return mContentView;
    }
-	
+    public static boolean copyFile(InputStream inputStream, OutputStream out) {
+        byte buf[] = new byte[1024];
+        int len;
+        try {
+            while ((len = inputStream.read(buf)) != -1) {
+                out.write(buf, 0, len);
+
+            }
+            out.close();
+            inputStream.close();
+        } catch (IOException e) {
+           // Log.d(WiFiDirectActivity.TAG, e.toString());
+            return false;
+        }
+        return true;
+    }
 	
 }

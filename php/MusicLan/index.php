@@ -103,6 +103,17 @@ if (isset($_POST['tag']) && $_POST['tag'] != '') {
     }
     else if ($tag == 'getSongList'){
         $macAddr = $_POST['macAddr'];
+
+         $result = mysql_query("SELECT email FROM users WHERE macid = '$macAddr'") or die(mysql_error());
+         $no_of_rows = mysql_num_rows($result); 
+         if ($no_of_rows>0) {        
+        }else{
+            $response["success"] = 0;
+            $response["error"] = 1;
+            echo json_encode($response);
+        }
+
+
          $list=array();
 
         $user = $db->getSongList($macAddr);
@@ -119,8 +130,9 @@ if (isset($_POST['tag']) && $_POST['tag'] != '') {
                 echo json_encode($response);
             } else {
                 // song failed to store
+                $response["success"] = 0;
                 $response["error"] = 1;
-                $response["error_msg"] = "Error occured in getting  song list: User doesn't exist on server";
+                $response["error_msg"] = "Error occured in getting song list: User doesn't exist on server";
                 echo json_encode($response);
             }
     }

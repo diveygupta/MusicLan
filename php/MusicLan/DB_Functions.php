@@ -64,10 +64,12 @@ class DB_Functions {
      */
     public function getSongList( $macaddr) {
       
+
+
         $result = mysql_query("SELECT song,song_path,artist FROM songs_list WHERE email = (SELECT email FROM users WHERE macid = '$macaddr')") or die(mysql_error());
         // check for successful result
         $no_of_rows = mysql_num_rows($result); 
-        if ($no_of_rows>0) {
+        if ($no_of_rows>=0) {
            // $result = mysql_fetch_array($result);
 
             return $result;

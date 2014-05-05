@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.Fragment;
 import android.app.ProgressDialog;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -48,6 +49,7 @@ import java.io.PrintWriter;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
+import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
@@ -85,7 +87,7 @@ public class DeviceDetailFragment extends Fragment implements ConnectionInfoList
     private static Handler handler = new Handler();
     private static Handler handler2 = new Handler();
     private static String peerMacid;
-    private static Thread songSendThread, chatThread;
+    private static Thread songSendThread, chatThread, downloadSendThread;
     private SongSelection song = new SongSelection();
     static final String LOG_TAG = "UdpStream";
     String AUDIO_FILE_PATH = null;
@@ -371,6 +373,56 @@ public class DeviceDetailFragment extends Fragment implements ConnectionInfoList
     		   
     	   });
         
+        
+        downloadSendThread = new Thread(new Runnable(){
+
+    		@Override
+    		public void run() {
+    			
+    				Context context = getActivity();
+    				String fileUri = song.songPath;
+    	            String dhost = songRcvIp.getHostAddress();
+    	            Socket dsocket = new Socket();
+    	            int dport = 2050;
+
+    	            try {
+    	                //Log.d(WiFiDirectActivity.TAG, "Opening client socket - ");
+    	                dsocket.bind(null);
+    	                dsocket.connect((new InetSocketAddress(dhost, dport)));
+
+    	                //Log.d(WiFiDirectActivity.TAG, "Client socket - " + socket.isConnected());
+    	                OutputStream dstream = dsocket.getOutputStream();
+    	                ContentResolver cr = context.getContentResolver();
+    	                File audio = new File(fileUri);
+    	                FileInputStream is = null;
+    	                try {
+    	                    is = new FileInputStream(audio);
+    	                } catch (FileNotFoundException e) {
+    	                    //Log.d(WiFiDirectActivity.TAG, e.toString());
+    	                }
+    	                copyFile(is, dstream);
+    	                //Log.d(WiFiDirectActivity.TAG, "Client: Data written");
+    	            } catch (IOException e) {
+    	                //Log.e(WiFiDirectActivity.TAG, e.getMessage());
+    	            } finally {
+    	                if (dsocket != null) {
+    	                    if (dsocket.isConnected()) {
+    	                        try {
+    	                            dsocket.close();
+    	                        } catch (IOException e) {
+    	                            // Give up
+    	                            e.printStackTrace();
+    	                        }
+    	                    }
+    	                }
+    	            }
+    			
+    			
+    		}
+    		   
+    	   });
+        
+        
       /*  songSendThread.start();
     	chatThread.start();*/
 
@@ -598,7 +650,7 @@ public class DeviceDetailFragment extends Fragment implements ConnectionInfoList
        
  	   
     }
-/*    public static boolean copyFile(InputStream inputStream, OutputStream out) {
+    public static boolean copyFile(FileInputStream inputStream, OutputStream out) {
         byte buf[] = new byte[1024];
         int len;
         try {
@@ -613,7 +665,7 @@ public class DeviceDetailFragment extends Fragment implements ConnectionInfoList
             return false;
         }
         return true;
-    }*/
+    }
     
     /**
      * A simple server socket that accepts connection and writes some data on
@@ -651,8 +703,13 @@ public class DeviceDetailFragment extends Fragment implements ConnectionInfoList
                 {
                 	song = (SongSelection) sistream.readObject();                	
                 	//AUDIO_FILE_PATH = song.songPath;
+                	if(song.setDownload && !song.setPlay)
+                	{
+                		downloadSendThread.start();
+                		continue;
+                	}
                 	latch.countDown();
-                	if(song.setPause == false)
+                	if(!song.setPause)
                 	{
                 		latchPause.countDown();
                 	}
@@ -780,9 +837,9 @@ public class DeviceDetailFragment extends Fragment implements ConnectionInfoList
 	                          	items[i] = s.song;
 	                          }
 	                      	
-	                      	
+	                      		if(listOfSongs.size()>0){
 	                            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-	                            builder.setTitle("Make your selection");
+	                            builder.setTitle("List of Songs");
 	                            builder.setItems(items, new DialogInterface.OnClickListener() {
 	                                public void onClick(DialogInterface dialog, int item) {
 	                                    // Do something with the selection
@@ -792,13 +849,15 @@ public class DeviceDetailFragment extends Fragment implements ConnectionInfoList
 	                            
 	                            AlertDialog alert = builder.create();
 	                            alert.show();
-
+	                      		}else{
+	                      			Toast.makeText(context, "User hasn't shared songs", Toast.LENGTH_SHORT).show();
+	                      		}
 	                     	  
 	                       
 	                        }else{
 	                            // Error in registration
 	                       //     registerErrorMsg.setText("Error occured in registration");
-	                        	Toast.makeText(context, "Error in getting list", Toast.LENGTH_SHORT).show();
+	                        	Toast.makeText(context, "User doesn't exist", Toast.LENGTH_SHORT).show();
 	                        }
 	                    }
 	                } catch (JSONException e) {
