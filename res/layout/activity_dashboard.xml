@@ -6,43 +6,56 @@
     android:orientation="vertical" >
 
      <ImageButton
+         android:id="@+id/btnLogout"
+         android:layout_width="80dp"
+         android:layout_height="70dp"
+         android:layout_alignLeft="@+id/btn_share_songs"
+         android:layout_below="@+id/btn_share_songs"
+         android:layout_marginTop="102dp"
+         android:background="@drawable/icon3"
+         android:scaleType="fitXY" />
+
+     <ImageButton
+         android:id="@+id/imageButton1"
+         android:layout_width="82dp"
+         android:layout_height="70dp"
+         android:layout_alignRight="@+id/btnLogout"
+         android:layout_below="@+id/btn_share_songs"
+         android:layout_marginTop="22dp"
+         android:background="@null"
+         android:scaleType="fitXY"
+         android:src="@drawable/icon4" />
+
+     <ImageButton
+         android:id="@+id/btn_share_songs"
+         android:layout_width="80dp"
+         android:layout_height="70dp"
+         android:layout_alignParentLeft="true"
+         android:layout_below="@+id/btnContinue"
+         android:layout_marginLeft="34dp"
+         android:layout_marginTop="18dp"
+         android:background="@drawable/icon2"
+         android:scaleType="fitXY" />
+
+     <ImageButton
          android:id="@+id/btnContinue"
          android:layout_width="82dp"
          android:layout_height="70dp"
-         android:layout_alignLeft="@+id/editText1"
-         android:layout_below="@+id/textView1"
+         android:layout_alignLeft="@+id/imageButton1"
+          android:layout_marginTop="18dp"
+         android:layout_alignParentTop="true"
          android:background="@drawable/icon1"
          android:scaleType="fitXY" />
 
      <TextView
-         android:id="@+id/textView1"
-         android:layout_width="fill_parent"
+         android:id="@+id/editText3"
+         android:layout_width="wrap_content"
          android:layout_height="wrap_content"
-         android:layout_alignParentLeft="true"
-         android:layout_alignParentTop="true"
-         android:gravity="center"
-         android:text="WELCOME"
-         android:textColor="@android:color/darker_gray"
-         android:textSize="40sp" />
-
-     <ImageButton
-         android:id="@+id/btnLogout"
-         android:layout_width="80dp"
-         android:layout_height="70dp"
-         android:layout_below="@+id/editText2"
-         android:layout_centerHorizontal="true"
-         android:background="@drawable/icon3"
-         android:scaleType="fitXY" />
-
-     <TextView
-         android:id="@+id/editText1"
-         android:layout_width="139dp"
-         android:layout_height="wrap_content"
-         android:layout_alignLeft="@+id/btn_share_songs"
-         android:layout_below="@+id/btnContinue"
+         android:layout_alignLeft="@+id/editText4"
+         android:layout_alignTop="@+id/btnLogout"
          android:layout_marginTop="20dp"
-         android:ems="10"
-         android:text="Continue"
+         android:ems="5"
+         android:text="Logout Me"
          android:textColor="#21dbd4"
          android:textSize="20sp"
          android:textStyle="bold" />
@@ -51,34 +64,38 @@
          android:id="@+id/editText2"
          android:layout_width="wrap_content"
          android:layout_height="wrap_content"
-         android:layout_alignLeft="@+id/btnLogout"
-         android:layout_alignParentRight="true"
-         android:layout_below="@+id/btn_share_songs"
-         android:ems="10"
+         android:layout_alignBottom="@+id/btn_share_songs"
+         android:layout_marginBottom="14dp"
+         android:layout_marginLeft="39dp"
+         android:layout_toRightOf="@+id/btn_share_songs"
+         android:ems="5"
          android:text="Share Songs"
          android:textColor="#21dbd4"
          android:textSize="20sp"
          android:textStyle="bold" />
 
-     <ImageButton
-         android:id="@+id/btn_share_songs"
-         android:layout_width="80dp"
-         android:layout_height="70dp"
-         android:layout_alignLeft="@+id/editText2"
-         android:layout_below="@+id/editText1"
-         android:layout_marginTop="14dp"
-         android:background="@drawable/icon2"
-         android:scaleType="fitXY" />
-
      <TextView
-         android:id="@+id/editText3"
+         android:id="@+id/editText4"
          android:layout_width="wrap_content"
          android:layout_height="wrap_content"
-         android:layout_alignLeft="@+id/btnLogout"
-         android:layout_alignParentRight="true"
-         android:layout_below="@+id/btnLogout"
+         android:layout_alignLeft="@+id/editText2"
+         android:layout_alignTop="@+id/imageButton1"
+         android:layout_marginTop="20dp"
+         android:ems="5"
+         android:text="View Songs"
+         android:textColor="#21dbd4"
+         android:textSize="20sp"
+         android:textStyle="bold" />
+
+     <TextView
+         android:id="@+id/editText1"
+         android:layout_width="139dp"
+         android:layout_height="wrap_content"
+         android:layout_alignBottom="@+id/btnContinue"
+         android:layout_alignLeft="@+id/editText2"
+         android:layout_marginBottom="14dp"
          android:ems="10"
-         android:text="Logout Me"
+         android:text="Continue"
          android:textColor="#21dbd4"
          android:textSize="20sp"
          android:textStyle="bold" />

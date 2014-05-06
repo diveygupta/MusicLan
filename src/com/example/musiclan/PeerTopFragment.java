@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import com.example.musiclan.R;
 import com.example.musiclan.R.layout;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.Context;
@@ -157,7 +158,7 @@ public class PeerTopFragment extends Fragment{
              }            
               
               // Show Alert 
-             Toast.makeText(context,"Position :"+itemPosition+"  Song : " + itemValue +"song path: "+ songPath, Toast.LENGTH_LONG).show();
+             Toast.makeText(context," Song : " + itemValue , Toast.LENGTH_SHORT).show();
            
              AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
      				context);
@@ -179,11 +180,25 @@ public class PeerTopFragment extends Fragment{
       			            		 	//song.setPlay = false;
       			            		 	song.setDownload = true;
       			            		 	song.songPath = songPath; 
+      			            		 	File f = new File(Environment.getExternalStorageDirectory()+ "/MusicLan/" + currentDownloadSong+ ".wav");
+      			            		 	if(f.exists()){
+      			            		 		Toast.makeText(context,"song already present", Toast.LENGTH_SHORT).show();
+      			            		 		dialog.cancel();
+      			            		 		return;
+      			            		 	}
+      			            			if(songDownloadThread == null || !songDownloadThread.isAlive())  
+      			            			{
+      			            				songDownloadThread.join();
+      			            				songDownloadThread.start();	
+      			            			}
       									sostream.writeObject(song);
       									sostream.flush();
       								} catch (IOException e) {	
       									e.printStackTrace();
-      								}
+      								} catch (InterruptedException e) {
+										// TODO Auto-generated catch block
+										e.printStackTrace();
+									}
       			             }
       			             else
       			            	 socketThread.start();
@@ -273,6 +288,7 @@ public class PeerTopFragment extends Fragment{
 		              //  InetAddress localIP = socket.getInetAddress();
 		                sostream = new ObjectOutputStream(socket.getOutputStream());
 		                sistream = new ObjectInputStream(socket.getInputStream());
+		                isSockOpen = true;
 		                if(songPath != null)
 		                {
 		                	SongSelection song = new SongSelection();
@@ -283,7 +299,7 @@ public class PeerTopFragment extends Fragment{
 	            		 	currentPlayingSong = songPath;
 							sostream.writeObject(song);
 		                	sostream.flush();
-		                	isSockOpen = true;
+		                	//isSockOpen = true;
 		                }
 						
 		                Log.d(WiFiDirect.TAG, "Client socket - " + socket.isConnected());
@@ -404,7 +420,10 @@ public class PeerTopFragment extends Fragment{
 		                {
 		                    Log.e(LOG_TAG, "IOException" + ie.toString());
 		                }
-		                
+		                finally{
+		                	
+		                	showToast(" Song downlaoding finished");
+		                }
 		                
 			}
 			   
@@ -412,6 +431,9 @@ public class PeerTopFragment extends Fragment{
 	   
 	 	if(songDownloadThread == null || !songDownloadThread.isAlive())  
 	               songDownloadThread.start();
+	 	
+	 	if(socketThread == null || !socketThread.isAlive())  
+	 		socketThread.start();
 	   
       return mContentView;
    }
@@ -432,4 +454,13 @@ public class PeerTopFragment extends Fragment{
         return true;
     }
 	
+    public void showToast(final String toast)
+    {
+        ((Activity) context).runOnUiThread(new Runnable() {
+            public void run()
+            {
+                Toast.makeText(context, toast, Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
 }

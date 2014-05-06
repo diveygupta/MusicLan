@@ -30,24 +30,13 @@
             android:textColor="#fff" />
     </android.support.v4.view.ViewPager>
 
-    <ImageButton
-        android:id="@+id/signup"
-        style="@style/AppBaseTheme"
-        android:layout_width="70dp"
-        android:layout_height="82dp"
-        android:layout_below="@+id/pager"
-        android:layout_centerHorizontal="true"
-        android:background="@null"
-        android:contentDescription="@null"
-        android:scaleType="fitXY"
-        android:src="@drawable/icon1" />
-
     <TextView
         android:id="@+id/editText1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/signup"
-        android:layout_centerHorizontal="true"
+        android:layout_alignBottom="@+id/signup"
+        android:layout_alignLeft="@+id/editText2"
+        android:layout_marginBottom="14dp"
         android:ems="5"
         android:fontFamily="Arial"
         android:paddingLeft="0.01dp"
@@ -59,9 +48,10 @@
         android:id="@+id/editText2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/editText1"
-        android:layout_below="@+id/login"
-        android:layout_marginTop="17dp"
+        android:layout_alignBottom="@+id/login"
+        android:layout_marginBottom="16dp"
+        android:layout_marginLeft="19dp"
+        android:layout_toRightOf="@+id/login"
         android:ems="5"
         android:paddingLeft="0.01dp"
         android:text="Sign In"
@@ -70,14 +60,30 @@
 
     <ImageButton
         android:id="@+id/login"
-        android:layout_width="164dp"
-        android:layout_height="72dp"
-        android:layout_alignRight="@+id/editText1"
-        android:layout_centerVertical="true"
+        android:layout_width="70dp"
+        android:layout_height="82dp"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/editText1"
+        android:layout_marginLeft="60dp"
+        android:layout_marginTop="25dp"
         android:background="@null"
         android:contentDescription="Login"
         android:scaleType="centerInside"
         android:src="@drawable/icon2"
         android:verticalScrollbarPosition="defaultPosition" />
+
+    <ImageButton
+        android:id="@+id/signup"
+        style="@style/AppBaseTheme"
+        android:layout_width="70dp"
+        android:layout_height="82dp"
+        android:layout_below="@+id/pager"
+        android:layout_marginTop="42dp"
+        android:layout_toLeftOf="@+id/editText2"
+        android:background="@null"
+        android:contentDescription="@null"
+        android:scaleType="fitXY"
+        android:src="@drawable/icon1" />
+
 
 </RelativeLayout>

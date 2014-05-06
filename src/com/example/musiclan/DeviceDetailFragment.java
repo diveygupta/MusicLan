@@ -392,7 +392,7 @@ public class DeviceDetailFragment extends Fragment implements ConnectionInfoList
 
     	                //Log.d(WiFiDirectActivity.TAG, "Client socket - " + socket.isConnected());
     	                OutputStream dstream = dsocket.getOutputStream();
-    	                ContentResolver cr = context.getContentResolver();
+    	               // ContentResolver cr = context.getContentResolver();
     	                File audio = new File(fileUri);
     	                FileInputStream is = null;
     	                try {

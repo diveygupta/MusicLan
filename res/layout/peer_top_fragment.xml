@@ -4,7 +4,7 @@
    android:orientation="vertical"
    android:layout_width="fill_parent"
    android:layout_height="fill_parent"
-   android:background="@drawable/wall2"
+   android:background="@drawable/wall17"
    >
 
 <RelativeLayout
@@ -31,16 +31,18 @@
            android:layout_marginTop="7dp"
            android:background="@drawable/play"
            android:scaleType="fitXY"
-           android:textColor="#ff000000" />
+           android:textColor="#ffffffff" />
 
  			</RelativeLayout>
- 		<ListView
-              android:id="@+id/list"
-              android:layout_height="wrap_content"
-              android:layout_width="match_parent"
-              android:cacheColorHint="#FFFFFF" 
-              android:textColor="@android:color/holo_blue_bright">
-         </ListView>
+
+<ListView
+    android:id="@+id/list"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:cacheColorHint="#ffffffff"
+    android:textColor="#ffffffff" >
+</ListView>
+
      <!--   <Button
            android:id="@+id/btn_Start_Chat"
            android:layout_width="wrap_content"
