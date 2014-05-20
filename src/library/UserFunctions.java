@@ -15,15 +15,16 @@ public class UserFunctions {
      
     // Testing in localhost using wamp 
     // use http://10.0.2.2/ to connect to your localhost ie http://localhost/ 10.120.103.103
-    private static String loginURL = "http://192.168.1.88/MusicLan/";
-    private static String registerURL = "http://192.168.1.88/MusicLan/";
-    private static String songShareURL = "http://192.168.1.88/MusicLan/";
+    private static String loginURL = "http://192.168.1.73/MusicLan/";
+    private static String registerURL = "http://192.168.1.73/MusicLan/";
+    private static String songShareURL = "http://192.168.1.73/MusicLan/";
      
     private static String login_tag = "login";
     private static String register_tag = "register";
     private static String song_register_tag = "shareSong";
     private static String  get_song_list_tag = "getSongList";
-     
+    private static String  get_peer_list_tag = "searchSong";
+    private static String  get_artist_list_tag ="searchArtist";
     // constructor
     public UserFunctions(){
         jsonParser = new JSONParser();
@@ -52,7 +53,7 @@ public class UserFunctions {
      * @param email
      * @param password
      * */
-    public JSONObject registerUser(String name, String email, String password, String macAddr){
+    public JSONObject registerUser(String name, String email, String password, String macAddr, String deviceName){
         // Building Parameters
         List<NameValuePair> params = new ArrayList<NameValuePair>();
         params.add(new BasicNameValuePair("tag", register_tag));
@@ -60,6 +61,7 @@ public class UserFunctions {
         params.add(new BasicNameValuePair("email", email));
         params.add(new BasicNameValuePair("password", password));
         params.add(new BasicNameValuePair("macAddr", macAddr));
+        params.add(new BasicNameValuePair("deviceName", deviceName));
          
         // getting JSON Object
         JSONObject json = jsonParser.getJSONFromUrl(registerURL, params);
@@ -106,6 +108,37 @@ public class UserFunctions {
 	        return json;
 	}
     
+	 /**
+     * function get peer list
+     * @param songName
+     * */
+	public JSONObject getPeerList(String songName) {
+		 List<NameValuePair> params = new ArrayList<NameValuePair>();
+	        params.add(new BasicNameValuePair("tag", get_peer_list_tag));
+	        params.add(new BasicNameValuePair("songName", songName));
+	    	         
+	        // getting JSON Object
+	        JSONObject json = jsonParser.getJSONFromUrl(songShareURL, params);
+	        // return json
+	        return json;
+	}
+	
+	   
+		 /**
+	     * function get song list
+	     * @param artistName
+	     * */
+		public JSONObject getArtistList(String artistName) {
+			 List<NameValuePair> params = new ArrayList<NameValuePair>();
+		        params.add(new BasicNameValuePair("tag", get_artist_list_tag));
+		        params.add(new BasicNameValuePair("artistName", artistName));
+		    	         
+		        // getting JSON Object
+		        JSONObject json = jsonParser.getJSONFromUrl(songShareURL, params);
+		        // return json
+		        return json;
+		}
+	
     /**
      * Function get Login status
      * */

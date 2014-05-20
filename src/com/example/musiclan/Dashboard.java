@@ -14,6 +14,7 @@ import library.UserFunctions;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.provider.MediaStore.MediaColumns;
 import android.app.Activity;
@@ -32,6 +33,7 @@ public class Dashboard extends Activity {
     ImageButton btnLogout;
     ImageButton btnContinue;
     ImageButton btnShare;
+    ImageButton btnViewSongs;
     
     private static String KEY_SUCCESS = "success";
     private static String KEY_EMAIL = "email";
@@ -53,7 +55,7 @@ public class Dashboard extends Activity {
 	            btnLogout = (ImageButton) findViewById(R.id.btnLogout);
 	            btnContinue = (ImageButton) findViewById(R.id.btnContinue);
 	            btnShare = (ImageButton)findViewById(R.id.btn_share_songs);
-	            
+	            btnViewSongs = (ImageButton)findViewById(R.id.btn_view_songs);
 	            btnContinue.setOnClickListener(new View.OnClickListener() {
 					
 					@Override
@@ -62,9 +64,12 @@ public class Dashboard extends Activity {
 						/*Intent playMusic = new Intent(getApplicationContext(), PlayMusic.class);
 						playMusic.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 						startActivity(playMusic);*/
-						Intent wifiD = new Intent(getApplicationContext(), WiFiDirect.class);
+						/*Intent wifiD = new Intent(getApplicationContext(), WiFiDirect.class);
 						wifiD.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-	                    startActivity(wifiD);
+	                    startActivity(wifiD);*/
+						Intent search = new Intent(getApplicationContext(), Search.class);
+						search.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+	                    startActivity(search);
 						// Closing dashboard screen
 	                   // finish();
 					}
@@ -97,6 +102,20 @@ public class Dashboard extends Activity {
 	                }
 	            });
 	             
+	            btnViewSongs.setOnClickListener(new View.OnClickListener() {
+					
+					@Override
+					public void onClick(View v) {
+						
+						Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+						Uri uri = Uri.parse(Environment.getExternalStorageDirectory().getPath()
+						    + "/MusicLan/");
+						intent.setDataAndType(uri, "audio/*");
+						startActivity(Intent.createChooser(intent, "Open folder"));
+						
+					}
+				});
+	            
 	        }else{
 	            // user is not logged in show login screen
 	            Intent login = new Intent(getApplicationContext(), Login.class);

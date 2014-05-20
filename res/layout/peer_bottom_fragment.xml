@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical" 
-      android:background="@drawable/wall18">
+      android:background="@drawable/wall19">
 
     <!-- More GUI components go here -->
  <Button
@@ -12,40 +12,63 @@
            android:layout_height="wrap_content"
            android:layout_marginTop="35dp"
            android:text="Start Chat"
-           android:background="@android:color/transparent"
            android:textColor="#ff000000" />
+
     <TextView
-        android:id="@+id/rcv_chat"
-        android:layout_width="match_parent"
-        android:layout_height="53dp"
-        android:hint="Rcv Msgs Here" 
-        android:visibility="invisible"
-        android:textColor="#ff000000"
+        android:id="@+id/text_bottom_peer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/rcv_chat"
+        android:layout_alignParentLeft="true"
+        android:layout_marginBottom="16dp"
         android:textSize="20sp"
-        />
+        android:text="Peer" 
+        android:visibility="invisible"/>
+
+    <TextView
+        android:id="@+id/text_bottom_you"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/text_bottom_peer"
+        android:layout_marginTop="26dp"
+        android:textSize="20sp"
+        android:text="You"
+        android:visibility="invisible" />
 
     <EditText
         android:id="@+id/send_chat"
         android:layout_width="match_parent"
         android:layout_height="50dp"
+        android:layout_alignLeft="@+id/rcv_chat"
+        android:layout_alignTop="@+id/text_bottom_you"
+        android:layout_marginRight="60dp"
+        android:ems="10"
         android:inputType="text"
-        android:ems="10" 
-        android:visibility="invisible"
         android:textColor="#ff000000"
         android:textSize="15sp"
-        >
-
-        <requestFocus />
-    </EditText>
+        android:visibility="invisible" />
 
     <Button
         android:id="@+id/btn_send"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Send" 
-        android:background="@android:color/transparent"
+        android:layout_alignBottom="@+id/send_chat"
+        android:layout_alignParentRight="true"
+        android:text="Send"
         android:textColor="#ff000000"
-        android:visibility="invisible"
-       />
+        android:visibility="invisible" />
 
-</LinearLayout>
+    <TextView
+        android:id="@+id/rcv_chat"
+        android:layout_width="248dp"
+        android:layout_height="53dp"
+        android:layout_below="@+id/btn_Start_Chat"
+        android:layout_marginLeft="16dp"
+        android:layout_toRightOf="@+id/text_bottom_peer"
+        android:hint="Rcv Msgs Here"
+        android:textColor="#ff000000"
+        android:textSize="20sp"
+        android:visibility="invisible" />
+
+</RelativeLayout>

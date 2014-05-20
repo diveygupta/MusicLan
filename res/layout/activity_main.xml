@@ -66,10 +66,10 @@
         android:layout_below="@+id/editText1"
         android:layout_marginLeft="60dp"
         android:layout_marginTop="25dp"
-        android:background="@null"
         android:contentDescription="Login"
         android:scaleType="centerInside"
         android:src="@drawable/icon2"
+        android:background="@null"
         android:verticalScrollbarPosition="defaultPosition" />
 
     <ImageButton
@@ -80,9 +80,9 @@
         android:layout_below="@+id/pager"
         android:layout_marginTop="42dp"
         android:layout_toLeftOf="@+id/editText2"
-        android:background="@null"
         android:contentDescription="@null"
         android:scaleType="fitXY"
+        android:background="@null"
         android:src="@drawable/icon1" />
 
 

@@ -21,12 +21,12 @@ class DB_Functions {
      * Storing new user
      * returns user details
      */
-    public function storeUser($name, $email, $password,$macaddr) {
+    public function storeUser($name, $email, $password,$macaddr,$deviceName) {
         $uuid = uniqid('', true);
         $hash = $this->hashSSHA($password);
         $encrypted_password = $hash["encrypted"]; // encrypted password
         $salt = $hash["salt"]; // salt
-        $result = mysql_query("INSERT INTO users(unique_id, name, email, encrypted_password, salt, macid, created_at) VALUES('$uuid', '$name', '$email', '$encrypted_password', '$salt','$macaddr', NOW())");
+        $result = mysql_query("INSERT INTO users(unique_id, name, email, encrypted_password, salt, macid,device_name, created_at) VALUES('$uuid', '$name', '$email', '$encrypted_password', '$salt','$macaddr','$deviceName', NOW())");
         // check for successful store
         if ($result) {
             // get user details 
@@ -78,6 +78,40 @@ class DB_Functions {
         }
     }
     
+    /**
+     * getting song name
+     * returns peers list as json object
+     */
+    public function getSongName($songName)  {    
+    $result = mysql_query("SELECT device_name,name,macid FROM users WHERE email IN (SELECT email FROM songs_list WHERE song = '$songName')") or die(mysql_error());
+    $no_of_rows = mysql_num_rows($result); 
+        if ($no_of_rows >= 0) {
+           // $result = mysql_fetch_array($result);
+
+            return $result;
+        } else {
+            return false;
+        }
+    
+    }
+
+    /**
+     * getting artist name
+     * returns song list as json object
+     */
+    public function getArtistName($artistName)  {    
+    $result = mysql_query("SELECT song FROM songs_list WHERE artist = '$artistName'") or die(mysql_error());
+    $no_of_rows = mysql_num_rows($result); 
+        if ($no_of_rows >= 0) {
+           // $result = mysql_fetch_array($result);
+
+            return $result;
+        } else {
+            return false;
+        }
+    
+    }
+
     /**
      * Get user by email and password
      */

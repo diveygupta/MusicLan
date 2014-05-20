@@ -74,10 +74,10 @@
 
         <Button
             android:id="@+id/btnRegister"
-            android:layout_width="match_parent"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dip"
-            android:background="@android:color/transparent"
+            android:layout_marginLeft="80dip"
             android:gravity="center_horizontal|center"
             android:text="Register"
             android:textColor="@android:color/holo_blue_bright"

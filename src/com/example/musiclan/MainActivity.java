@@ -1,9 +1,22 @@
 package com.example.musiclan;
 
 import java.io.File;
+import java.math.BigInteger;
+import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.net.SocketException;
+import java.net.UnknownHostException;
+import java.util.Enumeration;
 import java.util.Locale;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.wifi.WifiInfo;
+import android.net.wifi.WifiManager;
+import android.net.wifi.p2p.WifiP2pManager;
+import android.net.wifi.p2p.WifiP2pManager.Channel;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.Fragment;
@@ -12,6 +25,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.NavUtils;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -62,6 +76,8 @@ public class MainActivity extends FragmentActivity {
 		 if (!dir.exists())
 			 dir.mkdirs();
 		 
+		
+	     //System.out.println(deviceName);
 	}
 
 	public void addListenerOnButtonSignUp() {
@@ -99,6 +115,9 @@ public class MainActivity extends FragmentActivity {
 		});
  
 	}
+	
+
+
 	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {

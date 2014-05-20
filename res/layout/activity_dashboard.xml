@@ -7,44 +7,36 @@
 
      <ImageButton
          android:id="@+id/btnLogout"
-         android:layout_width="80dp"
-         android:layout_height="70dp"
+         android:layout_width="72dp"
+         android:layout_height="60dp"
          android:layout_alignLeft="@+id/btn_share_songs"
          android:layout_below="@+id/btn_share_songs"
          android:layout_marginTop="102dp"
-         android:background="@drawable/icon3"
+         android:src="@drawable/icon3"
+         android:background="@null"
          android:scaleType="fitXY" />
 
      <ImageButton
-         android:id="@+id/imageButton1"
-         android:layout_width="82dp"
-         android:layout_height="70dp"
+         android:id="@+id/btn_view_songs"
+         android:layout_width="72dp"
+         android:layout_height="60dp"
          android:layout_alignRight="@+id/btnLogout"
          android:layout_below="@+id/btn_share_songs"
          android:layout_marginTop="22dp"
-         android:background="@null"
          android:scaleType="fitXY"
+         android:background="@null"
          android:src="@drawable/icon4" />
 
      <ImageButton
          android:id="@+id/btn_share_songs"
-         android:layout_width="80dp"
-         android:layout_height="70dp"
+         android:layout_width="72dp"
+         android:layout_height="60dp"
          android:layout_alignParentLeft="true"
          android:layout_below="@+id/btnContinue"
          android:layout_marginLeft="34dp"
          android:layout_marginTop="18dp"
-         android:background="@drawable/icon2"
-         android:scaleType="fitXY" />
-
-     <ImageButton
-         android:id="@+id/btnContinue"
-         android:layout_width="82dp"
-         android:layout_height="70dp"
-         android:layout_alignLeft="@+id/imageButton1"
-          android:layout_marginTop="18dp"
-         android:layout_alignParentTop="true"
-         android:background="@drawable/icon1"
+         android:src="@drawable/icon2"
+         android:background="@null"
          android:scaleType="fitXY" />
 
      <TextView
@@ -79,7 +71,7 @@
          android:layout_width="wrap_content"
          android:layout_height="wrap_content"
          android:layout_alignLeft="@+id/editText2"
-         android:layout_alignTop="@+id/imageButton1"
+         android:layout_alignTop="@+id/btn_view_songs"
          android:layout_marginTop="20dp"
          android:ems="5"
          android:text="View Songs"
@@ -95,9 +87,21 @@
          android:layout_alignLeft="@+id/editText2"
          android:layout_marginBottom="14dp"
          android:ems="10"
-         android:text="Continue"
+         android:text="Stream Songs"
          android:textColor="#21dbd4"
          android:textSize="20sp"
          android:textStyle="bold" />
+
+     <ImageButton
+         android:id="@+id/btnContinue"
+         android:layout_width="72dp"
+         android:layout_height="60dp"
+         android:layout_alignLeft="@+id/btn_share_songs"
+         android:layout_alignParentTop="true"
+         android:layout_marginTop="18dp"
+         android:src="@drawable/icon1"
+         android:alpha = "1"
+         android:background="@null"
+         android:scaleType="fitXY" />
 
 </RelativeLayout>

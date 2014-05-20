@@ -53,6 +53,7 @@ if (isset($_POST['tag']) && $_POST['tag'] != '') {
         $email = $_POST['email'];
         $password = $_POST['password'];
         $macAddr = $_POST['macAddr'];
+        $deviceName = $_POST['deviceName'];
         // check if user is already existed
         if ($db->isUserExisted($email)) {
             // user is already existed - error response
@@ -61,7 +62,7 @@ if (isset($_POST['tag']) && $_POST['tag'] != '') {
             echo json_encode($response);
         } else {
             // store user
-            $user = $db->storeUser($name, $email, $password,$macAddr);
+            $user = $db->storeUser($name, $email, $password,$macAddr,$deviceName);
             if ($user) {
                 // user stored successfully
                 $response["success"] = 1;
@@ -135,6 +136,52 @@ if (isset($_POST['tag']) && $_POST['tag'] != '') {
                 $response["error_msg"] = "Error occured in getting song list: User doesn't exist on server";
                 echo json_encode($response);
             }
+    }else if($tag == 'searchSong'){
+    $songName = $_POST['songName'];
+    $list=array();
+    $user = $db->getSongName($songName);
+    if ($user) {
+                // song stored successfully
+                $response["success"] = 1;
+               while($rows=mysql_fetch_assoc($user)){
+                $list[] = $rows;
+               }
+               $response["list"] = $list;
+              // $list = array("list" => $list );
+              // $response = array($response, $list);
+             
+                echo json_encode($response);
+            } else {
+                // song failed to store
+                $response["success"] = 0;
+                $response["error"] = 1;
+                $response["error_msg"] = "Error occured in getting song list: User doesn't exist on server";
+                echo json_encode($response);
+            }
+    
+    }else if($tag == 'searchArtist'){
+    $artistName = $_POST['artistName'];
+    $list=array();
+    $user = $db->getArtistName($artistName);
+    if ($user) {
+                // song stored successfully
+                $response["success"] = 1;
+               while($rows=mysql_fetch_assoc($user)){
+                $list[] = $rows;
+               }
+               $response["list"] = $list;
+              // $list = array("list" => $list );
+              // $response = array($response, $list);
+             
+                echo json_encode($response);
+            } else {
+                // song failed to store
+                $response["success"] = 0;
+                $response["error"] = 1;
+                $response["error_msg"] = "Error occured in getting song list: User doesn't exist on server";
+                echo json_encode($response);
+            }
+    
     }
     else {
         echo "Invalid Request";

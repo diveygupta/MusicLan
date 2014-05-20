@@ -3,6 +3,7 @@ package com.example.musiclan;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Activity;
+import android.view.KeyEvent;
 import android.view.Menu;
 import java.util.HashMap;
 
@@ -14,10 +15,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.TextView.OnEditorActionListener;
  
 import library.DatabaseHandler;
 import library.UserFunctions;
@@ -52,39 +55,9 @@ public class Login extends Activity {
         btnLogin.setOnClickListener(new View.OnClickListener() {
  
             public void onClick(View view) {
-                String email = inputEmail.getText().toString();
-                String password = inputPassword.getText().toString();
                
-                if(email.length() == 0 || password.length() == 0){
-                	Toast.makeText(getApplicationContext(),"Field missing", Toast.LENGTH_SHORT).show();
-                	return;
-                }
-                
-                /*if(!email.contains("@") || !email.contains(".com")){
-                	Toast.makeText(getApplicationContext(),"Incorrect email id", Toast.LENGTH_SHORT).show();
-                	return;
-                }
-                if(password.length() < 6){
-                	Toast.makeText(getApplicationContext(),"Enter password of Min length 6", Toast.LENGTH_SHORT).show();
-                	return;
-                }*/
-               // UserFunctions userFunction = new UserFunctions();
-                //JSONObject json = 	
-                
-                
-              /*  Intent dashboard = new Intent(getApplicationContext(), Dashboard.class);
-                dashboard.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(dashboard);*/
-                
-                
-                //uncomment the following line later
-                		new getResponseLogin().execute(email,password);
-                		
-                		
-                		//userFunction.loginUser(email, password);
- 
                 // check for login response
-               
+            	loginUser();
             }
         });
  
@@ -97,9 +70,43 @@ public class Login extends Activity {
                 finish();
             }
         });
+        
+        inputPassword.setOnEditorActionListener(new OnEditorActionListener() {
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) || (actionId == EditorInfo.IME_ACTION_DONE)) {
+                	loginUser();
+                }    
+                return false;
+            }
+        });
     
 	}
 
+	void loginUser(){
+		 String email = inputEmail.getText().toString();
+         String password = inputPassword.getText().toString();
+        
+         if(email.length() == 0 || password.length() == 0){
+         	Toast.makeText(getApplicationContext(),"Field missing", Toast.LENGTH_SHORT).show();
+         	return;
+         }
+         
+         if(!email.contains("@") || !email.contains(".com")){
+         	Toast.makeText(getApplicationContext(),"Incorrect email id", Toast.LENGTH_SHORT).show();
+         	return;
+         }
+         if(password.length() < 6){
+         	Toast.makeText(getApplicationContext(),"Enter password of Min length 6", Toast.LENGTH_SHORT).show();
+         	return;
+         }
+       
+         //uncomment the following line later
+         		new getResponseLogin().execute(email,password);
+         		
+
+
+	}
+	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.

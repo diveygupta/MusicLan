@@ -78,6 +78,7 @@ public class DeviceDetailFragment extends Fragment implements ConnectionInfoList
     private static View mContentView = null;
     private WifiP2pDevice device;
     private WifiP2pInfo info;
+    private String prevRcvMsg="";
     ProgressDialog progressDialog = null;
     private static ServerSocket serverSocket, songServerSocket;
     private static Socket client, songClient;
@@ -89,6 +90,7 @@ public class DeviceDetailFragment extends Fragment implements ConnectionInfoList
     private static String peerMacid;
     private static Thread songSendThread, chatThread, downloadSendThread;
     private SongSelection song = new SongSelection();
+    private SongSelection dsong = new SongSelection();
     static final String LOG_TAG = "UdpStream";
     String AUDIO_FILE_PATH = null;
     //static final String AUDIO_FILE_PATH = "/storage/sdcard0/Music/Avril Lavigne/The Best Damn Thing/Girlfriend.mp3";
@@ -100,6 +102,7 @@ public class DeviceDetailFragment extends Fragment implements ConnectionInfoList
     static final int BUF_SIZE = 8000;
     boolean terminate = false;
     CountDownLatch latch = new CountDownLatch(1);
+    CountDownLatch latchDownload = new CountDownLatch(1);
     CountDownLatch latchPause = new CountDownLatch(0);
     public static ArrayList<SongList> listOfSongs = new ArrayList<SongList>(); 
     
@@ -121,7 +124,7 @@ public class DeviceDetailFragment extends Fragment implements ConnectionInfoList
             public void onClick(View v) {
             	if(listOfSongs.size() == 0)
             	{
-            		Toast.makeText(getActivity(), "First press Get List button to retrieve list of songs", Toast.LENGTH_LONG).show();
+            		Toast.makeText(getActivity(), "First press Get List button to retrieve list of songs", Toast.LENGTH_SHORT).show();
             		return;
             	}
             	
@@ -152,9 +155,11 @@ public class DeviceDetailFragment extends Fragment implements ConnectionInfoList
                     @Override
                     public void onClick(View v) {
                     	mContentView.findViewById(R.id.btn_peer_continue).setVisibility(View.GONE);
-                        mContentView.findViewById(R.id.rcv_chat_server).setVisibility(View.GONE);
+                        mContentView.findViewById(R.id.rcv_chat_serve).setVisibility(View.GONE);
                         mContentView.findViewById(R.id.send_chat_server).setVisibility(View.GONE);
-                        mContentView.findViewById(R.id.btn_send_chat_server).setVisibility(View.GONE);
+                        mContentView.findViewById(R.id.btn_send_chat_serve).setVisibility(View.GONE);
+                        mContentView.findViewById(R.id.text_device_peer).setVisibility(View.GONE);
+                        mContentView.findViewById(R.id.text_device_you).setVisibility(View.GONE);
                        /* try {
                         	if(client.isConnected())
                         		client.close();
@@ -162,6 +167,10 @@ public class DeviceDetailFragment extends Fragment implements ConnectionInfoList
 							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}*/
+                        /*terminate = true;
+                        serverSocket.close();
+                        songServerSocket.close();*/
+                        
                         ((DeviceActionListener) getActivity()).disconnect();
                     }
                 });
@@ -197,7 +206,7 @@ public class DeviceDetailFragment extends Fragment implements ConnectionInfoList
                 });
 
         //send chat to peer
-        mContentView.findViewById(R.id.btn_send_chat_server).setOnClickListener(
+        mContentView.findViewById(R.id.btn_send_chat_serve).setOnClickListener(
         new View.OnClickListener() {
 
             @Override
@@ -218,6 +227,7 @@ public class DeviceDetailFragment extends Fragment implements ConnectionInfoList
                  	Log.d("", msg);
     			 }
                  eText.setText("");
+                 eText.setHint(msg);
                  Log.d(WiFiDirect.TAG, "Server: Data written");
                 
             }
@@ -230,11 +240,13 @@ public class DeviceDetailFragment extends Fragment implements ConnectionInfoList
                     @Override
                     public void onClick(View v) {
                     	
-                    	StringBuilder tempAddr = new StringBuilder(peerMacid);
+                    	/*StringBuilder tempAddr = new StringBuilder(peerMacid);
                     	tempAddr.setCharAt(0,'0');
                     	tempAddr.setCharAt(1,'0');
                     	String macAddr = tempAddr.toString();
-                    	macAddr = macAddr.toLowerCase();
+                    	macAddr = macAddr.toLowerCase();*/
+                    	String macAddr;
+                    	macAddr = peerMacid;
                     	
                     	new getResponseSongsList(getActivity()).execute(macAddr);                       
                            Log.d(WiFiDirect.TAG, "Server: getting song list");
@@ -379,8 +391,15 @@ public class DeviceDetailFragment extends Fragment implements ConnectionInfoList
     		@Override
     		public void run() {
     			
-    				Context context = getActivity();
-    				String fileUri = song.songPath;
+    			//	Context context = getActivity();
+    				while(true){
+    			    try {
+						latchDownload.await();
+					} catch (InterruptedException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+    				String fileUri = dsong.songPath;
     	            String dhost = songRcvIp.getHostAddress();
     	            Socket dsocket = new Socket();
     	            int dport = 2050;
@@ -415,17 +434,18 @@ public class DeviceDetailFragment extends Fragment implements ConnectionInfoList
     	                        }
     	                    }
     	                }
+    	                latchDownload = new CountDownLatch(1);
     	            }
     			
-    			
+    			}
     		}
     		   
     	   });
         
         
       /*  songSendThread.start();
-    	chatThread.start();*/
-
+    	chatThread.start();
+        downloadSendThread.start();*/
         return mContentView;
     }
 
@@ -482,6 +502,9 @@ public class DeviceDetailFragment extends Fragment implements ConnectionInfoList
         		songSendThread.start();
         	if(chatThread == null || !chatThread.isAlive())
           	chatThread.start();
+        	if(downloadSendThread == null || !downloadSendThread.isAlive())
+        		downloadSendThread.start();
+        	
           	//new FileServerAsyncTask(getActivity(), mContentView.findViewById(R.id.status_text),(LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE)).execute();
         	new SongAsyncTask(getActivity(), mContentView.findViewById(R.id.status_text),(LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE)).execute();
         } else if (info.groupFormed) {
@@ -495,7 +518,7 @@ public class DeviceDetailFragment extends Fragment implements ConnectionInfoList
         
         // hide the connect button
         mContentView.findViewById(R.id.btn_connect).setVisibility(View.GONE);
-        
+        mContentView.findViewById(R.id.btn_get_song_list).setVisibility(View.GONE);
         //start the peer activity
         /*Intent intent = new Intent(getActivity().getApplicationContext(),PeerActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -510,11 +533,16 @@ public class DeviceDetailFragment extends Fragment implements ConnectionInfoList
     public void showDetails(WifiP2pDevice device) {
         this.device = device;
         this.getView().setVisibility(View.VISIBLE);
-        TextView view = (TextView) mContentView.findViewById(R.id.device_address);
-        view.setText(device.deviceAddress);
+        TextView view = (TextView) mContentView.findViewById(R.id.device_address);       
         peerMacid = device.deviceAddress;
-        view = (TextView) mContentView.findViewById(R.id.device_info);
-        view.setText(device.toString());
+        StringBuilder tempAddr = new StringBuilder(peerMacid);
+    	tempAddr.setCharAt(0,'0');
+    	tempAddr.setCharAt(1,'0');
+    	peerMacid = tempAddr.toString();
+    	peerMacid = peerMacid.toLowerCase();
+        view.setText(peerMacid);
+       // view = (TextView) mContentView.findViewById(R.id.device_info);
+       // view.setText(device.toString());
 
     }
 
@@ -620,15 +648,17 @@ public class DeviceDetailFragment extends Fragment implements ConnectionInfoList
         
     }*/
     
-    public static void displayMsg(final String msg)
+    public  void displayMsg(final String msg)
     {
  	   
  	   handler.post(new Runnable() {
  			
  			@Override
  			public void run() {
- 				 TextView tview = (TextView) mContentView.findViewById(R.id.rcv_chat_server);
-    			 tview.setText(msg);
+ 				 TextView tview = (TextView) mContentView.findViewById(R.id.rcv_chat_serve);
+    			 //tview.setText(msg);
+ 				tview.setText(prevRcvMsg+" \n"+msg);
+			       prevRcvMsg = msg;
  			}
  		});
        
@@ -642,9 +672,11 @@ public class DeviceDetailFragment extends Fragment implements ConnectionInfoList
  			
  			@Override
  			public void run() {
- 				mContentView.findViewById(R.id.rcv_chat_server).setVisibility(View.VISIBLE);
+ 				mContentView.findViewById(R.id.rcv_chat_serve).setVisibility(View.VISIBLE);
  	            mContentView.findViewById(R.id.send_chat_server).setVisibility(View.VISIBLE);
- 	            mContentView.findViewById(R.id.btn_send_chat_server).setVisibility(View.VISIBLE);
+ 	            mContentView.findViewById(R.id.btn_send_chat_serve).setVisibility(View.VISIBLE);
+ 	           mContentView.findViewById(R.id.text_device_peer).setVisibility(View.VISIBLE);
+ 	          mContentView.findViewById(R.id.text_device_you).setVisibility(View.VISIBLE);
  			}
  		});
        
@@ -701,13 +733,14 @@ public class DeviceDetailFragment extends Fragment implements ConnectionInfoList
                 
                 while(true)
                 {
-                	song = (SongSelection) sistream.readObject();                	
+                	dsong = (SongSelection) sistream.readObject();                	
                 	//AUDIO_FILE_PATH = song.songPath;
-                	if(song.setDownload && !song.setPlay)
+                	if(dsong.setDownload && !dsong.setPlay)
                 	{
-                		downloadSendThread.start();
+                		latchDownload.countDown();
                 		continue;
                 	}
+                	song = dsong;
                 	latch.countDown();
                 	if(!song.setPause)
                 	{

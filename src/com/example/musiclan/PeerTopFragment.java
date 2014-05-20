@@ -17,6 +17,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
 import java.util.ArrayList;
+import java.util.concurrent.CountDownLatch;
 
 import com.example.musiclan.R;
 import com.example.musiclan.R.layout;
@@ -57,6 +58,7 @@ public class PeerTopFragment extends Fragment{
 	ListView listView ;
 	Context context;
 	String songPath = null;
+	CountDownLatch latchDownload = new CountDownLatch(1);
 	boolean isSockOpen = false, setPause = false;
 	public String currentPlayingSong = null, currentDownloadSong = null;
 	static final String LOG_TAG = "UdpStream";
@@ -186,19 +188,14 @@ public class PeerTopFragment extends Fragment{
       			            		 		dialog.cancel();
       			            		 		return;
       			            		 	}
-      			            			if(songDownloadThread == null || !songDownloadThread.isAlive())  
-      			            			{
-      			            				songDownloadThread.join();
-      			            				songDownloadThread.start();	
-      			            			}
+      			            			
+      			            		 	latchDownload.countDown();
+      			            		 	
       									sostream.writeObject(song);
       									sostream.flush();
       								} catch (IOException e) {	
       									e.printStackTrace();
-      								} catch (InterruptedException e) {
-										// TODO Auto-generated catch block
-										e.printStackTrace();
-									}
+      								} 
       			             }
       			             else
       			            	 socketThread.start();
@@ -388,9 +385,16 @@ public class PeerTopFragment extends Fragment{
 			public void run() {
 				// TODO Auto-generated method stub
 				  Log.e(LOG_TAG, "start recv thread, thread id: " + Thread.currentThread().getId());
-		              
+				  while(true){
 				  try
 	                {
+					  
+					  try {
+							latchDownload.await();
+						} catch (InterruptedException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}	
 				  	ServerSocket songServerSocket = new ServerSocket(DOWNLOAD_PORT);
 	                Log.d(WiFiDirect.TAG, "Server: Socket opened");
 	                Socket songClient = songServerSocket.accept();	                
@@ -399,7 +403,7 @@ public class PeerTopFragment extends Fragment{
 	                InputStream distream = songClient.getInputStream();
 	              //  OutputStream dostream = songClient.getOutputStream();
 				          	
-		            	    
+	                  
 	                final File f = new File(Environment.getExternalStorageDirectory()+ "/MusicLan/" + currentDownloadSong+ ".wav");
 
 	                File dirs = new File(f.getParent());
@@ -410,8 +414,8 @@ public class PeerTopFragment extends Fragment{
 	              //  Log.d(WiFiDirectActivity.TAG, "server: copying files " + f.toString());
 	                copyFile(distream, new FileOutputStream(f));
 	                songServerSocket.close();
-	                
-		                }
+					  }
+		                
 		                catch (SocketException se)
 		                {
 		                    Log.e(LOG_TAG, "SocketException: " + se.toString());
@@ -421,10 +425,10 @@ public class PeerTopFragment extends Fragment{
 		                    Log.e(LOG_TAG, "IOException" + ie.toString());
 		                }
 		                finally{
-		                	
-		                	showToast(" Song downlaoding finished");
+		                	latchDownload = new CountDownLatch(1);
+		                	showToast(" Song downloading finished");
 		                }
-		                
+				  }   
 			}
 			   
 		   });

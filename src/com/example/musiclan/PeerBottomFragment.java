@@ -34,6 +34,7 @@ public class PeerBottomFragment extends Fragment{
 	 private Button btnStartChat;
 	 private String host;
 	 private int port;
+	 private String prevRcvMsg="";
 	 private Thread socketThread,rcvThread;
 	 private static Socket socket = new Socket();
 	 private ObjectOutputStream ostream;
@@ -73,6 +74,8 @@ public class PeerBottomFragment extends Fragment{
 			 mContentView.findViewById(R.id.rcv_chat).setVisibility(View.VISIBLE);
 			 mContentView.findViewById(R.id.send_chat).setVisibility(View.VISIBLE);
 			 mContentView.findViewById(R.id.btn_send).setVisibility(View.VISIBLE);
+			 mContentView.findViewById(R.id.text_bottom_peer).setVisibility(View.VISIBLE);
+			 mContentView.findViewById(R.id.text_bottom_you).setVisibility(View.VISIBLE);
 			 btnStartChat.setVisibility(View.GONE);
 			 socketThread.start();
 			// rcvThread.start();
@@ -167,6 +170,7 @@ public class PeerBottomFragment extends Fragment{
 			// out.flush();
              Log.d(WiFiDirect.TAG, "Client: Data written");
              eText.setText("");
+             eText.setHint(msg);
 		}
 	} );
 	   
@@ -182,8 +186,11 @@ public class PeerBottomFragment extends Fragment{
 			@Override
 			public void run() {
 				 TextView tText = (TextView) getActivity().findViewById(R.id.rcv_chat);
-			       tText.setBackgroundColor(12);			     
-			       tText.setText(msg);
+			       tText.setBackgroundColor(12);
+			       //prevRcvMsg = msg;
+			       //tText.setText(msg);
+			       tText.setText(prevRcvMsg+" \n"+msg);
+			       prevRcvMsg = msg;
 			}
 		});
       
